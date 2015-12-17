@@ -309,7 +309,7 @@ A behavior used to add selection capabilities on a custom element.
 
         // LISTENERS
         listeners: {
-            'click': '_selectHandler'
+            'click': '_switchHandler'
         },
 
         // OBSERVERS
@@ -536,15 +536,15 @@ A behavior used to add selection capabilities on a custom element.
         /*********************************************************************/
 
         // HANDLER
-        _selectHandler: function (event) {
+        _switchHandler: function (event) {
 
             // Checking
-            if (event.button || !this.selectable) { return; }
+            if (event.button || event.selectPrevented || !this.selectable) { return; }
 
             // Vars
             var self   = this,
                 target = Polymer.dom(event).rootTarget,
-                item   = self.findItem(target) || self.findItem(XP.findParentElement(target, self.itemSelector, event.pressed || self)) || self.findItem(event.pressed);
+                item   = self.findItem(target) || self.findItem(XP.findParentElement(target, self.itemSelector, self));
 
             // Switching
             if (item) { self.switch(item, false, true); }
