@@ -532,7 +532,7 @@ A behavior used to add selection capabilities on a custom element.
             self._setSelectedData(self.selection && !self.multi ? XP.toDefined(self.selection.data) : null);
 
             // Mutating
-            self.items.forEach(function (item) { XP.setAttribute(item, self.selectedAttribute, self.isSelected(item, true)); });
+            if (self.items) { self.items.forEach(function (item) { XP.setAttribute(item, self.selectedAttribute, self.isSelected(item, true)); }); }
 
             // Firing
             self.fire('xp-selection', {firer: self, selection: self.selection, selected: self.selected, isMulti: self.multi, isSwitchable: self.multi || self.switchable});
