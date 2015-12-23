@@ -328,9 +328,7 @@ A behavior used to add selection capabilities on a custom element.
              * @attribute default-selected
              * @type number | string
              */
-            defaultSelected: {
-
-            },
+            defaultSelected: {},
 
             /**
              * If set to true, there are no selected items.
@@ -396,6 +394,19 @@ A behavior used to add selection capabilities on a custom element.
             selectedAttribute: {
                 type: String,
                 value: 'active'
+            },
+
+            /**
+             * The selected item's data.
+             *
+             * @attribute selected-data
+             * @type *
+             * @notifies
+             * @readonly
+             */
+            selectedData: {
+                notify: true,
+                readOnly: true
             },
 
             /**
@@ -517,11 +528,14 @@ A behavior used to add selection capabilities on a custom element.
             // Vars
             var self = this;
 
+            // Setting
+            self._setSelectedData(self.selection && !self.multi ? XP.toDefined(self.selection.data) : null);
+
+            // Mutating
+            self.items.forEach(function (item) { XP.setAttribute(item, self.selectedAttribute, self.isSelected(item, true)); });
+
             // Firing
             self.fire('xp-selection', {firer: self, selection: self.selection, selected: self.selected, isMulti: self.multi, isSwitchable: self.multi || self.switchable});
-
-            // Setting
-            if (self.items) { self.items.forEach(function (item) { XP.setAttribute(item, self.selectedAttribute, self.isSelected(item, true)); }); }
         },
 
         /*********************************************************************/
